@@ -56,7 +56,7 @@ class Page
 	}
 
 	// Responds with correct headers and sets the template to ether error_notfound.html or a specified alternative
-	public function notFound($template='error_notfound.html');
+	public function notFound($template='error_notfound.html')
 	{
 		header('HTTP/1.1 404 Not Found');
 		$this->setTemplate($template);
