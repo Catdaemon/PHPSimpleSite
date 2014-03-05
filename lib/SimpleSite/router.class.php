@@ -6,11 +6,13 @@ class Router
 {
 	private static $routes = array();
 
+	// Defines a new route. $function is called with arguments specified in the path.
 	public static function addRoute($path, $function)
 	{
 		self::$routes[$path] = $function;
 	}
 
+	// Calls the function defined by the route found for $request. Returns true for success or false if a route isn't found.
 	public static function route($request = '/')
 	{
 		$uri = !empty($request) ? $request : '/';

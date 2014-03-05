@@ -55,6 +55,20 @@ class Page
 		die();
 	}
 
+	// Responds with correct headers and sets the template to ether error_notfound.html or a specified alternative
+	public function notFound($template='error_notfound.html');
+	{
+		header('HTTP/1.1 404 Not Found');
+		$this->setTemplate($template);
+	}
+
+	// Assigns an 'errors' variable and sets the template to error_generic.html or a specified alternative
+	public function error($errors, $template='error_generic.html')
+	{
+		$this->assign('errors', $errors);
+		$this->setTemplate($template);
+	}
+
 	// Ensure the user is viewing the SSL version of the page
 	public function requireSSL()
 	{
