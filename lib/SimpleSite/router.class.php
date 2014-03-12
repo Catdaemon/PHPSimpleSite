@@ -20,6 +20,8 @@ class Router
 		if ($uri != '/' && substr($uri, -1) != '/')
 			$uri .= '/';
 
+		$uri = preg_replace('/\\?(.*)/', '', $uri);
+
 		foreach(self::$routes as $path => $func)
 		{
 			if (preg_match("#^{$path}$#", $uri))
