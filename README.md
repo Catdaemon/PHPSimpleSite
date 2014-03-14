@@ -240,44 +240,46 @@ This is where it all comes together. It does the following:
 
     $page;
 
+    // This function connects and returns an error string if there's an error.
     $dberror = dbExt::connect('mysql:host=localhost;dbname=mydb', 'myblog', 'mypassword');
 
     // If there's a problem connecting, load the "error" page and run the "database" method
-    if (!empty($dberror))
+    if (is_string($dberror))
     {
         $page = Page::load('error');
         $page->database($dberror);
-    }
+    } else {
 
-    // Load the home page as the index
-    Router::addRoute('/', function() use (&$page) {
-        $page = Page::load('home');
-        $page->index();
-    });
+        // Load the home page as the index
+        Router::addRoute('/', function() use (&$page) {
+            $page = Page::load('home');
+            $page->index();
+        });
 
-    // Load page 1 of the blog by default
-    Router::addRoute('/blog/', function() use (&$page) {
-        $page = Page::load('blog');
-        $page->index(1);
-    });
+        // Load page 1 of the blog by default
+        Router::addRoute('/blog/', function() use (&$page) {
+            $page = Page::load('blog');
+            $page->index(1);
+        });
 
-    // Load the specified blog page
-    Router::addRoute('/blog/page/.+/', function($pageNo) use (&$page) {
-        $page = Page::load('blog');
-        $page->index($pageNo);
-    });
+        // Load the specified blog page
+        Router::addRoute('/blog/page/.+/', function($pageNo) use (&$page) {
+            $page = Page::load('blog');
+            $page->index($pageNo);
+        });
 
-    // Load the specified post
-    Router::addRoute('/blog/.+/', function($n) use (&$page) {
-        $page = Page::load('blog');
-        $page->view($n);
-    });
+        // Load the specified post
+        Router::addRoute('/blog/.+/', function($n) use (&$page) {
+            $page = Page::load('blog');
+            $page->view($n);
+        });
 
-    // Plug the request URI into the router. This assumes the web server points all not-found requests at index.php.
-    if (!Router::route($_SERVER['REQUEST_URI']) && empty($dberror) || empty($page))
-    {
-        $page = Page::load('error');
-        $page->notfound();
+        // Plug the request URI into the router. This assumes the web server points all not-found requests at index.php.
+        if (!Router::route($_SERVER['REQUEST_URI']) && empty($dberror) || empty($page))
+        {
+            $page = Page::load('error');
+            $page->notfound();
+        }
     }
 
     // Site specific processing here
