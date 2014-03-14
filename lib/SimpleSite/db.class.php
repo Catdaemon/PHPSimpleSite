@@ -14,10 +14,10 @@ class dbExt extends PDO
 	{
 		try
 		{
-			self::$instance = new dbext($dsn, $user, $password);
+			self::$instance = new dbExt($dsn, $user, $password);
 		}
 		catch (PDOException $e)
-		{
+		{			
 			return $e->getMessage();
 		}
 
@@ -28,7 +28,7 @@ class dbExt extends PDO
 	{
 		if (!isset(self::$instance))
 		{
-			die("you must call connect before getInstance");
+			throw new Exception("getInstance must be called only after a successful connect.");
 		}
 		return self::$instance;
 	}
